@@ -22,6 +22,7 @@ function(lru_add_test name)
 endfunction()
 
 lru_add_test(lru_test_v1 test_lru_v1.cpp)
+lru_add_test(lru_test_v2 test_lru_v2.cpp)
 
 # Sanitizer builds run many times slower than a normal build, so they pass a smaller count here
 # instead of the test carrying a special case for them.

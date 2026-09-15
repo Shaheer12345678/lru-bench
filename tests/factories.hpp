@@ -6,6 +6,7 @@
 
 #include <cstddef>
 
+#include "lru/IntrusiveLru.hpp"
 #include "lru/LruCache.hpp"
 
 namespace lru_test {
@@ -13,6 +14,16 @@ namespace lru_test {
 struct V1Factory {
     template <typename K, typename V>
     using cache = lru::LruCache<K, V>;
+
+    template <typename K, typename V>
+    static cache<K, V> make(std::size_t capacity) {
+        return cache<K, V>(capacity);
+    }
+};
+
+struct V2Factory {
+    template <typename K, typename V>
+    using cache = lru::IntrusiveLru<K, V>;
 
     template <typename K, typename V>
     static cache<K, V> make(std::size_t capacity) {

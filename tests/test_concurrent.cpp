@@ -68,7 +68,7 @@ void raise_to(std::atomic<std::size_t>& maximum, std::size_t candidate) noexcept
 template <typename Factory>
 class LruConcurrentTest : public ::testing::Test {};
 
-using ConcurrentFactories = ::testing::Types<V1Factory>;
+using ConcurrentFactories = ::testing::Types<V1Factory, V2Factory>;
 
 TYPED_TEST_SUITE(LruConcurrentTest, ConcurrentFactories);
 
