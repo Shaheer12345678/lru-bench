@@ -7,6 +7,7 @@
 #include <gtest/gtest.h>
 
 #include <atomic>
+#include <concepts>
 #include <cstddef>
 #include <cstdint>
 #include <latch>
@@ -65,10 +66,39 @@ void raise_to(std::atomic<std::size_t>& maximum, std::size_t candidate) noexcept
     }
 }
 
+// Caches that expose their shard layout. For these the test also proves that traffic really was spread
+// across shards, since a run that happened to touch one shard would not exercise what sharding changes:
+// several shard locks held at once, and size() summing shards while other threads write to them.
+template <typename Cache>
+concept ShardedCache = requires(const Cache& cache, std::uint64_t key) {
+    { cache.shard_count() } -> std::convertible_to<std::size_t>;
+    { cache.shard_for(key) } -> std::convertible_to<std::size_t>;
+};
+
+template <typename Cache>
+std::size_t shard_count_of(const Cache&) {
+    return 1;
+}
+
+template <ShardedCache Cache>
+std::size_t shard_count_of(const Cache& cache) {
+    return cache.shard_count();
+}
+
+template <typename Cache>
+std::size_t shard_of(const Cache&, std::uint64_t) {
+    return 0;
+}
+
+template <ShardedCache Cache>
+std::size_t shard_of(const Cache& cache, std::uint64_t key) {
+    return cache.shard_for(key);
+}
+
 template <typename Factory>
 class LruConcurrentTest : public ::testing::Test {};
 
-using ConcurrentFactories = ::testing::Types<V1Factory, V2Factory>;
+using ConcurrentFactories = ::testing::Types<V1Factory, V2Factory, V3Factory<16>>;
 
 TYPED_TEST_SUITE(LruConcurrentTest, ConcurrentFactories);
 
@@ -115,14 +145,21 @@ TYPED_TEST(LruConcurrentTest, MixedOpsKeepSizeBoundedAndValuesIntact) {
         }
     });
 
+    // Each worker counts its operations per shard in its own row, so no synchronisation is needed.
+    const std::size_t shards = shard_count_of(cache);
+    std::vector<std::vector<std::uint64_t>> ops_per_thread_and_shard(
+        kThreads, std::vector<std::uint64_t>(shards, 0));
+
     std::vector<std::thread> workers;
     workers.reserve(kThreads);
     for (int t = 0; t < kThreads; ++t) {
         const auto thread_index = static_cast<std::uint64_t>(t);
         const std::uint64_t ops =
             kTotalOps / kThreads + (t == 0 ? kTotalOps % kThreads : 0);
+        const auto row = static_cast<std::size_t>(t);
 
-        workers.emplace_back([&, thread_index, ops] {
+        workers.emplace_back([&, thread_index, ops, row] {
+            std::vector<std::uint64_t>& my_shard_ops = ops_per_thread_and_shard[row];
             // Fixed seeds keep each thread's operation sequence reproducible between runs, even
             // though the interleaving is not.
             std::mt19937_64 rng(mix(thread_index));
@@ -132,6 +169,7 @@ TYPED_TEST(LruConcurrentTest, MixedOpsKeepSizeBoundedAndValuesIntact) {
             for (std::uint64_t i = 0; i < ops; ++i) {
                 const std::uint64_t key = rng() % kKeySpace;
                 const std::uint64_t op = rng() % 10;
+                ++my_shard_ops[shard_of(cache, key)];
 
                 if (op < 5) {
                     cache.put(key, Record::make(key, (thread_index << 48) | i));
@@ -158,6 +196,12 @@ TYPED_TEST(LruConcurrentTest, MixedOpsKeepSizeBoundedAndValuesIntact) {
     }
     workers_done.store(true, std::memory_order_relaxed);
     monitor.join();
+
+    for (std::size_t t = 0; t < ops_per_thread_and_shard.size(); ++t) {
+        for (std::size_t s = 0; s < shards; ++s) {
+            EXPECT_GT(ops_per_thread_and_shard[t][s], 0u) << "thread " << t << " never reached shard " << s;
+        }
+    }
 
     EXPECT_EQ(size_violations.load(), 0u) << "largest size observed: " << max_size_seen.load();
     EXPECT_EQ(corrupt_reads.load(), 0u);

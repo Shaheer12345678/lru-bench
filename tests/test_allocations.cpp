@@ -1,4 +1,4 @@
-// Proves, rather than asserts, that IntrusiveLru does not allocate once it is constructed.
+// Proves, rather than asserts, that IntrusiveLru and ShardedLru do not allocate once they are constructed.
 //
 // Allocations are counted by replacing the global operator new and delete for this executable.
 // A counting allocator was the alternative, but neither cache takes an allocator parameter, so it
@@ -163,16 +163,19 @@ AllocationCount steady_state_allocations() {
     return {after.allocations - before.allocations, after.bytes - before.bytes};
 }
 
-TEST(SteadyStateAllocations, IntrusiveLruAllocatesNothingWhileLruCacheDoes) {
+TEST(SteadyStateAllocations, ArenaDesignsAllocateNothingWhileLruCacheDoes) {
     const AllocationCount v1 = steady_state_allocations<V1Factory>();
     const AllocationCount v2 = steady_state_allocations<V2Factory>();
+    const AllocationCount v3 = steady_state_allocations<V3Factory<16>>();
 
     std::cout << "[ counts   ] " << kSteadyStateOps << " ops on a full cache of " << kCapacity
               << ": LruCache " << v1.allocations << " allocations (" << v1.bytes << " bytes), "
-              << "IntrusiveLru " << v2.allocations << " allocations (" << v2.bytes << " bytes)\n";
+              << "IntrusiveLru " << v2.allocations << " allocations (" << v2.bytes << " bytes), "
+              << "ShardedLru x16 " << v3.allocations << " allocations (" << v3.bytes << " bytes)\n";
 
     ASSERT_GT(v1.allocations, 0u) << "the control made no allocations, so the counter is not working";
     EXPECT_EQ(v2.allocations, 0u) << v2.bytes << " bytes allocated";
+    EXPECT_EQ(v3.allocations, 0u) << v3.bytes << " bytes allocated";
 }
 
 }  // namespace
