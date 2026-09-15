@@ -67,3 +67,14 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# local tooling
+.claude/
+PLAN.md
+
+
+# cmake
+build/
+cmake-build-*/
+CMakeUserPresets.json
+
