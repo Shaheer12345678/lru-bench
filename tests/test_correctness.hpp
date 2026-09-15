@@ -141,6 +141,19 @@ TYPED_TEST_P(LruContractTest, SizeNeverExceedsCapacity) {
     }
 }
 
+// Catches a full cache that drops new keys instead of evicting, which the size bound above cannot see.
+// It holds for a sharded design too: sharding changes which older entry is evicted and how full each
+// shard gets, but eviction always makes room before the insert, so the key just written survives as
+// long as its shard has any capacity, which the roomy capacity guarantees.
+TYPED_TEST_P(LruContractTest, JustInsertedKeyIsAlwaysRetrievable) {
+    auto cache = TypeParam::template make<int, int>(kRoomyCapacity);
+
+    for (int key = 0; key < static_cast<int>(kRoomyCapacity) * 10; ++key) {
+        cache.put(key, key + 1);
+        ASSERT_EQ(cache.get(key), std::optional<int>(key + 1)) << "key " << key << " missing straight after put";
+    }
+}
+
 TYPED_TEST_P(LruContractTest, CapacityReportsConstructorArgument) {
     for (std::size_t capacity : {std::size_t{0}, std::size_t{1}, std::size_t{7}, kRoomyCapacity}) {
         auto cache = TypeParam::template make<int, int>(capacity);
@@ -204,7 +217,8 @@ TYPED_TEST_P(LruContractTest, NoValueCopiesOnPutUpdateVisitOrEviction) {
 
 REGISTER_TYPED_TEST_SUITE_P(LruContractTest, SatisfiesCacheConcept, PutThenGetReturnsStoredValue,
                             MissReturnsEmptyAndDoesNotInsert, UpdateReplacesValueWithoutGrowing,
-                            SizeNeverExceedsCapacity, CapacityReportsConstructorArgument,
+                            SizeNeverExceedsCapacity, JustInsertedKeyIsAlwaysRetrievable,
+                            CapacityReportsConstructorArgument,
                             CapacityZeroStoresNothing, MoveOnlyValueWorks,
                             NoValueCopiesOnPutUpdateVisitOrEviction);
 
