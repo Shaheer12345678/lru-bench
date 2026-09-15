@@ -22,3 +22,15 @@ function(lru_add_test name)
 endfunction()
 
 lru_add_test(lru_test_v1 test_lru_v1.cpp)
+
+# Sanitizer builds run many times slower than a normal build, so they pass a smaller count here
+# instead of the test carrying a special case for them.
+set(LRU_CONCURRENT_OPS 1000000 CACHE STRING "Total operations performed by the concurrency stress test")
+if(NOT LRU_CONCURRENT_OPS MATCHES "^[1-9][0-9]*$")
+    message(FATAL_ERROR "LRU_CONCURRENT_OPS must be a positive integer, not '${LRU_CONCURRENT_OPS}'")
+endif()
+
+find_package(Threads REQUIRED)
+lru_add_test(lru_test_concurrent test_concurrent.cpp)
+target_link_libraries(lru_test_concurrent PRIVATE Threads::Threads)
+target_compile_definitions(lru_test_concurrent PRIVATE LRU_CONCURRENT_OPS=${LRU_CONCURRENT_OPS})

@@ -7,7 +7,7 @@
 // that the designs are behaviourally interchangeable, so these tests must never be edited to suit
 // a particular implementation.
 //
-// An implementation plugs in through a factory type:
+// An implementation plugs in through a factory type (the factories live in factories.hpp):
 //
 //     struct Factory {
 //         template <typename K, typename V> using cache = ...;

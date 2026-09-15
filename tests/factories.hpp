@@ -1,0 +1,23 @@
+#pragma once
+
+// Adapters that give every cache implementation the same construction interface, so the shared
+// suites in this directory can create caches without knowing which design they are exercising.
+// See test_correctness.hpp for the shape a factory must have.
+
+#include <cstddef>
+
+#include "lru/LruCache.hpp"
+
+namespace lru_test {
+
+struct V1Factory {
+    template <typename K, typename V>
+    using cache = lru::LruCache<K, V>;
+
+    template <typename K, typename V>
+    static cache<K, V> make(std::size_t capacity) {
+        return cache<K, V>(capacity);
+    }
+};
+
+}  // namespace lru_test
