@@ -16,6 +16,30 @@
 
 namespace lru {
 
+namespace detail {
+
+// Bucket arithmetic lives outside the class so a test can check it directly. A bad shift is undefined
+// behaviour, which an ordinary build may not reveal as a visible failure.
+
+// Never fewer than 2 buckets: with a single bucket the Fibonacci shift below would be 64, and shifting
+// a 64-bit value by 64 is undefined.
+constexpr std::size_t intrusive_bucket_count(std::size_t capacity) noexcept {
+    return std::bit_ceil(std::max<std::size_t>(capacity, 2));
+}
+
+constexpr unsigned fibonacci_shift(std::size_t bucket_count) noexcept {
+    return static_cast<unsigned>(64 - std::countr_zero(bucket_count));
+}
+
+// Fibonacci hashing: multiplying by 2^64 / phi and keeping the top bits spreads every input bit into
+// the index. std::hash for integers is the identity on common standard libraries, so masking the low
+// bits directly would put structured keys (all multiples of 64, say) into a few buckets.
+constexpr std::size_t fibonacci_bucket(std::uint64_t hash, unsigned shift) noexcept {
+    return static_cast<std::size_t>((hash * 0x9E3779B97F4A7C15ULL) >> shift);
+}
+
+}  // namespace detail
+
 // v2: the same contract and the same single mutex as LruCache, but with every allocation moved to
 // construction.
 //
@@ -45,8 +69,8 @@ public:
     // so it is committed in full here.
     explicit IntrusiveLru(std::size_t capacity)
         : capacity_(checked_capacity(capacity)),
-          bucket_count_(std::bit_ceil(std::max<std::size_t>(capacity_, 2))),
-          bucket_shift_(static_cast<unsigned>(64 - std::countr_zero(bucket_count_))),
+          bucket_count_(detail::intrusive_bucket_count(capacity_)),
+          bucket_shift_(detail::fibonacci_shift(bucket_count_)),
           sentinel_(static_cast<std::uint32_t>(capacity_)),
           nodes_(std::make_unique_for_overwrite<Node[]>(capacity_ + 1)),
           buckets_(std::make_unique_for_overwrite<std::uint32_t[]>(bucket_count_)) {
@@ -160,12 +184,8 @@ private:
     // from the array is not the one construct_at returned.
     Entry* entry(std::uint32_t i) noexcept { return std::launder(storage(i)); }
 
-    // Fibonacci hashing spreads the high bits of the multiplied hash across the power-of-two table.
-    // std::hash for integers is the identity on common standard libraries, so masking the low bits
-    // directly would put structured keys (all multiples of 64, say) into a few buckets.
     std::size_t bucket_of(const K& key) const {
-        const std::uint64_t h = static_cast<std::uint64_t>(hash_(key));
-        return static_cast<std::size_t>((h * 0x9E3779B97F4A7C15ULL) >> bucket_shift_);
+        return detail::fibonacci_bucket(static_cast<std::uint64_t>(hash_(key)), bucket_shift_);
     }
 
     std::uint32_t find(std::size_t bucket, const K& key) {
