@@ -1,0 +1,49 @@
+hit_rate_sweep: 108 rows (gcc), 108 rows (clang); outputs byte-identical: True
+
+exact-LRU agreement (identical hit counts for v1, v2 and v3 with one shard):
+  uniform  95:5  capacity   10000: hits 37810  agree True
+  uniform  95:5  capacity  100000: hits 380015  agree True
+  uniform  95:5  capacity  500000: hits 1899515  agree True
+  uniform  50:50 capacity   10000: hits 19900  agree True
+  uniform  50:50 capacity  100000: hits 200220  agree True
+  uniform  50:50 capacity  500000: hits 999550  agree True
+  zipfian  95:5  capacity   10000: hits 2178548  agree True
+  zipfian  95:5  capacity  100000: hits 2926744  agree True
+  zipfian  95:5  capacity  500000: hits 3500268  agree True
+  zipfian  50:50 capacity   10000: hits 1144689  agree True
+  zipfian  50:50 capacity  100000: hits 1538161  agree True
+  zipfian  50:50 capacity  500000: hits 1840527  agree True
+  all 12 workloads agree: True
+
+hit rate by design and shard count (4,000,000 measured reads and writes after warmup):
+  distribution rw     capacity      v1      v2    v3x1    v3x2    v3x4    v3x8   v3x16   v3x32   v3x64  max shard cost
+  uniform      95:5      10000  0.0100  0.0100  0.0100  0.0100  0.0100  0.0100  0.0099  0.0099  0.0100  0.0000
+  uniform      95:5     100000  0.1000  0.1000  0.1000  0.1000  0.1000  0.1000  0.1000  0.1000  0.1000  0.0000
+  uniform      95:5     500000  0.5000  0.5000  0.5000  0.5000  0.5000  0.5000  0.5000  0.5000  0.5000  0.0000
+  uniform      50:50     10000  0.0100  0.0100  0.0100  0.0100  0.0099  0.0099  0.0100  0.0100  0.0100  0.0000
+  uniform      50:50    100000  0.1002  0.1002  0.1002  0.1002  0.1002  0.1002  0.1002  0.1002  0.1002  0.0000
+  uniform      50:50    500000  0.5000  0.5000  0.5000  0.5000  0.5000  0.5000  0.5000  0.5001  0.5000  0.0000
+  zipfian      95:5      10000  0.5732  0.5732  0.5732  0.5732  0.5732  0.5732  0.5731  0.5731  0.5729  0.0003
+  zipfian      95:5     100000  0.7701  0.7701  0.7701  0.7701  0.7701  0.7701  0.7700  0.7700  0.7700  0.0000
+  zipfian      95:5     500000  0.9210  0.9210  0.9210  0.9210  0.9210  0.9210  0.9210  0.9210  0.9209  0.0000
+  zipfian      50:50     10000  0.5727  0.5727  0.5727  0.5727  0.5726  0.5726  0.5726  0.5725  0.5724  0.0002
+  zipfian      50:50    100000  0.7695  0.7695  0.7695  0.7695  0.7695  0.7695  0.7695  0.7695  0.7695  0.0000
+  zipfian      50:50    500000  0.9208  0.9208  0.9208  0.9208  0.9208  0.9208  0.9208  0.9208  0.9208  0.0000
+
+memory footprint: requested bytes, allocation counts and final size identical between gcc and clang: True
+  design           capacity  construct bytes (allocs)  bytes (allocs) to fill 1%   to fill 100%              final size  RSS KiB construct/1%/full (gcc, clang)
+  v1_LruCache         10000         82312 ( 2)             5600 (  200)          554400 ( 19800)      10000    128/256/1024, 256/256/1024
+  v1_LruCache        100000        863304 ( 2)            56000 ( 2000)         5544000 (198000)     100000    896/1024/8832, 1024/1024/8832
+  v1_LruCache        500000       4162056 ( 2)           280000 (10000)        27720000 (990000)     500000    4096/4608/43264, 4224/4608/43264
+  v2_IntrusiveLru     10000        385672 ( 3)                0 (    0)               0 (     0)      10000    128/128/384, 128/128/384
+  v2_IntrusiveLru    100000       3724424 ( 3)                0 (    0)               0 (     0)     100000    512/512/3712, 512/512/3712
+  v2_IntrusiveLru    500000      18097288 ( 3)                0 (    0)               0 (     0)     500000    2048/2176/17664, 2048/2176/17664
+  v3_ShardedLru16     10000        388120 (34)                0 (    0)               0 (     0)       9800    128/128/384, 128/128/384
+  v3_ShardedLru16    100000       3726872 (34)                0 (    0)               0 (     0)      99557    640/640/3712, 640/640/3712
+  v3_ShardedLru16    500000      18099736 (34)                0 (    0)               0 (     0)     499146    2304/2432/17792, 2304/2432/17792
+
+steady-state allocation counts (tests/test_allocations.cpp):
+  gcc: 200000 ops on a full cache of 4096: LruCache 148384 allocations (4154752 bytes), IntrusiveLru 0 allocations (0 bytes), ShardedLru x16 0 allocations (0 bytes); test passed: True
+  clang: 200000 ops on a full cache of 4096: LruCache 148384 allocations (4154752 bytes), IntrusiveLru 0 allocations (0 bytes), ShardedLru x16 0 allocations (0 bytes); test passed: True
+
+deterministic summary: OK

@@ -1,0 +1,74 @@
+{
+  "context": {
+    "date": "2026-09-15T05:31:44-06:00",
+    "host_name": "LAPTOP-EMHRSRSA",
+    "executable": "/home/shaheer/projects/lru-bench/build/gcc-release/bench/bench_single_thread",
+    "num_cpus": 8,
+    "mhz_per_cpu": 2496,
+    "cpu_scaling_enabled": false,
+    "aslr_enabled": true,
+    "caches": [
+      {
+        "type": "Data",
+        "level": 1,
+        "size": 49152,
+        "num_sharing": 2
+      },
+      {
+        "type": "Instruction",
+        "level": 1,
+        "size": 32768,
+        "num_sharing": 2
+      },
+      {
+        "type": "Unified",
+        "level": 2,
+        "size": 1310720,
+        "num_sharing": 2
+      },
+      {
+        "type": "Unified",
+        "level": 3,
+        "size": 10485760,
+        "num_sharing": 8
+      }
+    ],
+    "load_avg": [0.658203,0.310059,0.120117],
+    "library_version": "v1.9.5",
+    "library_build_type": "release",
+    "json_schema_version": 1,
+    "assertions": "disabled",
+    "cxx_compiler": "11.4.0",
+    "git_dirty": "true",
+    "git_head": "555ef9a82fea7c66fa3fc036725ceccbd79df3b2",
+    "key_space": "1000000",
+    "miss_policy": "load on miss: a read that misses puts the key",
+    "session": "diag-after-gate-before-session1-retry-20260915T113100Z",
+    "source_tree_sha256": "ee2afa4d248c0bc64aa3c73dffae29d634cb07a9acd1306bbfe3f8dbac766cc7",
+    "stream_length_per_thread": "2097152",
+    "v3_shard_count": "16",
+    "warmup_ops": "max(1000000, 4 x capacity), load on miss, single threaded",
+    "zipf_theta": "0.990000"
+  },
+  "benchmarks": [
+    {
+      "name": "v2_IntrusiveLru/cap_pct:10/write_pct:5/zipf:1/real_time/threads:1",
+      "family_index": 0,
+      "per_family_instance_index": 0,
+      "run_name": "v2_IntrusiveLru/cap_pct:10/write_pct:5/zipf:1/real_time/threads:1",
+      "run_type": "iteration",
+      "repetitions": 1,
+      "repetition_index": 0,
+      "threads": 1,
+      "iterations": 27279581,
+      "real_time": 2.5751602306574149e+01,
+      "cpu_time": 2.5827992849303655e+01,
+      "time_unit": "ns",
+      "hits": 1.9955445000000000e+07,
+      "items_per_second": 3.8832535082475588e+07,
+      "miss_puts": 5.9599050000000000e+06,
+      "reads": 2.5915350000000000e+07,
+      "writes": 1.3642310000000000e+06
+    }
+  ]
+}

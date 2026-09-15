@@ -1,0 +1,5 @@
+start: time_local=2026-09-15T05:29:03.3643399-06:00 ac_online=True charging=False charge_pct=100 win32_charge_pct=100 charge_rate_mw=0 remaining_mwh=31781 full_mwh=31781 procthrottlemax_ac=0x00000063 procthrottlemax_dc=0x00000063 energy_saver_state=1 power_mode_overlay_ac=961cc777-2547-4f9d-8174-7d86181b8a7a
+end: time_local=2026-09-15T05:29:27.4823282-06:00 ac_online=True charging=False charge_pct=100 win32_charge_pct=100 charge_rate_mw=0 remaining_mwh=31781 full_mwh=31781 procthrottlemax_ac=0x00000063 procthrottlemax_dc=0x00000063 energy_saver_state=1 power_mode_overlay_ac=961cc777-2547-4f9d-8174-7d86181b8a7a
+keep_awake_pid: 20416
+power_events=none
+power_ok: yes

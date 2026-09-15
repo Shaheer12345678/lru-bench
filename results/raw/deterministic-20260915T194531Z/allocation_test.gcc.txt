@@ -1,0 +1,12 @@
+Running main() from /home/shaheer/projects/lru-bench/build/gcc-release-tests/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SteadyStateAllocations
+[ RUN      ] SteadyStateAllocations.ArenaDesignsAllocateNothingWhileLruCacheDoes
+[ counts   ] 200000 ops on a full cache of 4096: LruCache 148384 allocations (4154752 bytes), IntrusiveLru 0 allocations (0 bytes), ShardedLru x16 0 allocations (0 bytes)
+[       OK ] SteadyStateAllocations.ArenaDesignsAllocateNothingWhileLruCacheDoes (37 ms)
+[----------] 1 test from SteadyStateAllocations (37 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (37 ms total)
+[  PASSED  ] 1 test.

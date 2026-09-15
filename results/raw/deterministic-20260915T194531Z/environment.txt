@@ -1,0 +1,14 @@
+run: deterministic-20260915T194531Z
+date_utc: 2026-09-15T19:46:27Z
+git_head: 555ef9a82fea7c66fa3fc036725ceccbd79df3b2
+git_dirty: true (milestone 5 code not yet committed at run time)
+code_sha256: c6bfb288c856c322f283b963bfdfac167987f0d8cd6b8bf7acdfd58bc0b6caa2
+code_sha256_command: find include bench tests CMakeLists.txt -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum
+gcc: g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+clang: Ubuntu clang version 14.0.0-1ubuntu1.1
+glibc: ldd (Ubuntu GLIBC 2.35-0ubuntu3.15) 2.35
+cmake: cmake version 4.4.3
+kernel: 6.6.87.2-microsoft-standard-WSL2
+build: CMAKE_BUILD_TYPE=Release
+hit_rate_sweep_exit_gcc: 0 (0 means v1, v2 and v3 with one shard produced identical hit counts)
+hit_rate_sweep_exit_clang: 0 (0 means v1, v2 and v3 with one shard produced identical hit counts)
