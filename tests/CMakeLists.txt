@@ -24,6 +24,15 @@ endfunction()
 lru_add_test(lru_test_v1 test_lru_v1.cpp)
 lru_add_test(lru_test_v2 test_lru_v2.cpp)
 
+# Separate executable because it replaces the global operator new and delete for the whole process.
+# Not built with a sanitizer: the sanitizer runtimes supply their own operator new, so under TSan the
+# replacement does not link and under ASan it silently displaces ASan's new/delete checking. The
+# allocation count is a property of the normal build, and the code it exercises still runs under every
+# sanitizer through the other test executables.
+if(NOT LRU_SANITIZER)
+    lru_add_test(lru_test_allocations test_allocations.cpp)
+endif()
+
 # Sanitizer builds run many times slower than a normal build, so they pass a smaller count here
 # instead of the test carrying a special case for them.
 set(LRU_CONCURRENT_OPS 1000000 CACHE STRING "Total operations performed by the concurrency stress test")
