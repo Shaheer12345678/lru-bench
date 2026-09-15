@@ -23,6 +23,7 @@ endfunction()
 
 lru_add_test(lru_test_v1 test_lru_v1.cpp)
 lru_add_test(lru_test_v2 test_lru_v2.cpp)
+lru_add_test(lru_test_v3 test_lru_v3.cpp)
 
 # Separate executable because it replaces the global operator new and delete for the whole process.
 # Not built with a sanitizer: the sanitizer runtimes supply their own operator new, so under TSan the
