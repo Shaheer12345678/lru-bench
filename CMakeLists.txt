@@ -12,9 +12,10 @@ option(LRU_BUILD_BENCH "Build the Google Benchmark harness" OFF)
 set(LRU_SANITIZER "" CACHE STRING "Instrument the whole build with one sanitizer: address, undefined or thread")
 set_property(CACHE LRU_SANITIZER PROPERTY STRINGS "" address undefined thread)
 
-# Fail at configure time rather than silently producing a build with no benchmarks in it.
-if(LRU_BUILD_BENCH)
-    message(FATAL_ERROR "LRU_BUILD_BENCH was requested, but the benchmark harness has not been added yet")
+# Sanitizers slow code by several times and memory_footprint replaces the global operator new, so a
+# sanitized benchmark build would either fail to link or produce numbers that mean nothing.
+if(LRU_BUILD_BENCH AND LRU_SANITIZER)
+    message(FATAL_ERROR "LRU_BUILD_BENCH cannot be combined with LRU_SANITIZER")
 endif()
 
 add_library(lru INTERFACE)
@@ -51,4 +52,8 @@ endif()
 if(LRU_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+if(LRU_BUILD_BENCH)
+    add_subdirectory(bench)
 endif()
