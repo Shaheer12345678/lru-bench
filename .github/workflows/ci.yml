@@ -74,7 +74,7 @@ jobs:
       # than their shadow memory layout allows. This lowers the runner's setting to the traditional value.
       - name: Limit mmap randomisation
         run: |
-          echo "vm.mmap_rnd_bits was $(sysctl -n vm.mmap_rnd_bits)"
+          echo "vm.mmap_rnd_bits was $(sudo sysctl -n vm.mmap_rnd_bits)"
           sudo sysctl -w vm.mmap_rnd_bits=28
 
       - name: Show toolchain

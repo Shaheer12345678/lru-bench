@@ -71,6 +71,7 @@ Testing/
 # local tooling
 .claude/
 PLAN.md
+NOTES.md
 
 
 # cmake
