@@ -47,6 +47,63 @@ jobs:
       - name: Test
         run: ctest --test-dir build --output-on-failure
 
+  # Keeps the benchmark harness compiling under -Werror with both compilers and proves each tool still runs. The
+  # timings from a shared runner are meaningless and are not used; hit_rate_sweep is deterministic and exits non-zero
+  # if v1, v2 and v3 with one shard ever disagree on hit counts.
+  bench-smoke:
+    name: bench smoke ${{ matrix.compiler }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - compiler: gcc
+            cxx: g++
+          - compiler: clang
+            cxx: clang++
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Configure
+        run: >
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+          -DLRU_BUILD_TESTS=OFF
+          -DLRU_BUILD_BENCH=ON
+
+      - name: Build
+        run: cmake --build build -j
+
+      - name: Single-thread cell
+        working-directory: build/bench
+        run: >
+          ./bench_single_thread --benchmark_filter='^v2_IntrusiveLru/cap_pct:1/write_pct:5/zipf:1/'
+          --benchmark_min_time=0.01s --benchmark_repetitions=1
+
+      - name: Interleaved thread counts with per-repetition timestamps
+        working-directory: build/bench
+        run: |
+          ./bench_multi_thread --lru_threads=1,2 --benchmark_filter='/cap_pct:1/write_pct:5/zipf:1/' \
+            --benchmark_min_time=0.01s --benchmark_repetitions=2 --benchmark_enable_random_interleaving=true \
+            --benchmark_format=json --benchmark_out=smoke.json > /dev/null
+          python3 - <<'EOF'
+          import json
+          reps = [b for b in json.load(open("smoke.json"))["benchmarks"] if b.get("run_type") == "iteration"]
+          threads = sorted({b["threads"] for b in reps})
+          assert len(reps) == 12 and threads == [1, 2], (len(reps), threads)
+          assert all("start_unix_ms" in b and "end_unix_ms" in b for b in reps)
+          print(f"{len(reps)} repetitions, thread counts {threads}, all timestamped")
+          EOF
+
+      - name: Memory footprint
+        working-directory: build/bench
+        run: ./memory_footprint v2 10000
+
+      - name: Hit-rate sweep and exact-LRU agreement
+        working-directory: build/bench
+        run: ./hit_rate_sweep > hit_rate_sweep.jsonl && wc -l hit_rate_sweep.jsonl
+
   sanitizers:
     name: ${{ matrix.sanitizer }} sanitizer
     runs-on: ubuntu-24.04
