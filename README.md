@@ -12,8 +12,9 @@ shared test suite.
   `operator new`, with v1 as the control that proves the counter works.
 - **v2 to v3: sharding costs at most 0.0003 hit rate** (Zipfian keys, 10,000 entries, 64 shards). What it gives up is
   global LRU order, and the test suite is split in two because of that.
-- **The tests were tested.** One suite instantiated against all three designs; mutation testing showing which planted
-  bug each test catches; ASan, UBSan and TSan each shown to fire before being trusted.
+- **The tests were tested.** One suite instantiated against all three designs; 28 planted bugs in
+  [tests/mutation/](tests/mutation/README.md), each declaring the tests it must break, rerunnable in about 6 minutes;
+  ASan, UBSan and TSan each shown to fire before being trusted.
 - **No throughput numbers are published.** The benchmark harness is here and runs in CI, but a 15 W laptop could not
   hold frequency long enough to measure the designs rather than the laptop. [Why](results/README.md#why-no-throughput-numbers).
 
@@ -62,12 +63,15 @@ dangle as soon as another thread evicted the entry.
 v3's hit-rate cost is small because each shard still holds hundreds of entries, and per-shard LRU approximates global
 LRU closely at that size. Its throughput benefit is the part this repository does not quantify (see Results).
 
-Full figures, inputs and seeds are in [results/README.md](results/README.md).
+Full figures, inputs and seeds are in [results/README.md](results/README.md). The 32,162,056 bytes above is not a
+figure the tool prints: it is the sum of the three cells in that table's v1 row at capacity 500,000 (construction,
+fill to 1%, fill to capacity), which is what v1 has requested in total by the time it is full.
 
 ## Testing
 
-104 tests per build; CI runs gcc and clang in Debug and Release, ASan, UBSan and TSan, and a benchmark smoke job on
-every push. The full record is in [tests/README.md](tests/README.md).
+104 tests per build, as `ctest` counts them: each instantiation of a typed test is one test, run as its own process.
+CI runs gcc and clang in Debug and Release, ASan, UBSan and TSan, and a benchmark smoke job on every push. The full
+record is in [tests/README.md](tests/README.md).
 
 **One suite, three designs.** `tests/test_correctness.hpp` is written once and instantiated for every design. It is two
 suites because sharding breaks one of them:
@@ -76,7 +80,11 @@ suites because sharding breaks one of them:
 - The **strict-order suite** (6 tests) checks exact global LRU eviction. v3 runs it with one shard only, because with
   more it is supposed to fail, and its multi-shard ordering has per-shard tests instead.
 
-**Mutation testing.** Planted bugs, and which tests caught them:
+**Mutation testing, committed and rerunnable.** [`tests/mutation/`](tests/mutation/README.md) holds 28 planted bugs,
+each declaring the file it changes, the exact edit, and the tests that must fail because of it. `run.sh` applies them
+to a copy of the sources outside the working tree and reports any difference from what was declared, so a mutation
+that stops being caught is a failure rather than a silence. The committed run: **28 mutations, 0 discrepancies,
+348 s**.
 - Each recency bug is caught by the test named for that behaviour: a `get` that does not refresh recency fails
   `GetRefreshesRecency`, a miss that reorders fails `MissDoesNotMutateOrder`, and so on, identically on all three designs.
 - It found a real gap. A full cache that silently drops new keys instead of evicting passed the entire contract suite.
@@ -86,16 +94,18 @@ suites because sharding breaks one of them:
   different hash) were each caught by a v3-specific test, and the first two pass the whole contract suite.
 
 **Corruption that size checks miss.** The concurrency test stores records that must agree with the key they are read
-under. An update written to the wrong entry produced **36,309 corrupt reads** on v1 (37,176 on v2, 35,801 on v3) while
-every size assertion passed.
+under. An update written to the wrong entry produced **36,400 corrupt reads** on v1 (36,411 on v2, 35,908 on v3) while
+every size assertion passed. The counts depend on thread interleaving and differ run to run; that the size assertions
+stay silent does not, and the campaign checks for their failure text on every rerun.
 
 **Sanitizers, each shown to fire on a planted bug first:**
 - **TSan:** removing v1's lock in `put` gave a race on `std::list`'s element count between the capacity check and
   `push_front`; a statistics counter in v3's `shard_for` gave a race between two shard-selecting threads; an unlocked
   `size()` raced with `put` through `ShardedLru::size()`.
-- **ASan:** a use-after-free on eviction in v1 failed 10 of 16 tests. The same ordering bug in v2 and v3 passes every
-  test unseen, because the arena's memory stays allocated. That blind spot is documented as a cost of the arena
-  design, not worked around.
+- **ASan:** a use-after-free on eviction in v1 failed 10 of the v1 suite's 16 tests, plus the concurrency test; the 6
+  that passed are the ones that never evict. The same ordering bug in v2 and v3 passes every test unseen, because the
+  arena's memory stays allocated. That blind spot is documented as a cost of the arena design, not worked around, and
+  it stays in the campaign with "no failures and no report" as its declared expectation.
 - **UBSan:** lowering v2's bucket minimum to 1 gave `shift exponent 64` in `bucket_of`. In normal builds it only
   segfaulted, so the arithmetic now has a direct regression test that fails with an assertion.
 

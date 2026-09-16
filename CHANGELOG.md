@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Testing infrastructure
+  - `tests/mutation/`: the mutation campaign as committed, rerunnable evidence. 28 planted bugs, each declaring the
+    file it changes, the exact edit, the build configuration and the tests expected to fail; a runner that applies
+    them to a copy of the sources outside the working tree, compares what failed against what was declared, and exits
+    non-zero on any difference. `tests/mutation/results/` holds the report of the run the documentation cites.
 - Documentation
   - Project README covering the design progression, testing approach and published results.
   - `tests/README.md`, the record of mutation testing and sanitizer verification.
