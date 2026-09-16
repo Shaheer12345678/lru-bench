@@ -3,9 +3,11 @@
 All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to
-[Semantic Versioning](https://semver.org/spec/v2.0.0.html). No release has been tagged yet.
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.0] - 2026-09-15
 
 ### Added
 
@@ -63,4 +65,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - The allocation test is not built in sanitizer builds, where the sanitizer runtime supplies `operator new`.
 - The CI sanitizer jobs log the runner's `vm.mmap_rnd_bits` before lowering it to 28.
 
-[Unreleased]: https://github.com/Shaheer12345678/lru-bench/commits/main
+[Unreleased]: https://github.com/Shaheer12345678/lru-bench/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Shaheer12345678/lru-bench/releases/tag/v0.1.0
