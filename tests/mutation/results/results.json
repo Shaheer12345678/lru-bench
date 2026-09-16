@@ -1,0 +1,1041 @@
+{
+  "meta": {
+    "timestamp": "2026-09-16T00:15:58Z",
+    "cxx": "c++",
+    "cxx_version": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+    "sanitizer_cxx": "clang++",
+    "sanitizer_cxx_version": "Ubuntu clang version 14.0.0-1ubuntu1.1",
+    "cmake_version": "cmake version 4.4.3",
+    "setarch": true,
+    "seconds": 348.46359372138977,
+    "discrepancies": 0,
+    "mutations_run": 28,
+    "mutations_defined": 28
+  },
+  "mutations": [
+    {
+      "id": "v1-get-does-not-refresh",
+      "config": "debug",
+      "description": "get() finds the entry but does not move it to the front of the recency list",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency"
+      ],
+      "actual": [
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency"
+      ],
+      "reasons": {
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V1/LruStrictOrderTest.GetRefreshesRecency": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-visit-does-not-refresh",
+      "config": "debug",
+      "description": "visit() does not move the entry to the front; get() is built on visit(), so neither refreshes",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "actual": [
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "reasons": {
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V1/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-update-does-not-refresh",
+      "config": "debug",
+      "description": "put() on an existing key replaces the value but does not move the entry to the front",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing"
+      ],
+      "actual": [
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing"
+      ],
+      "reasons": {
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-miss-reorders",
+      "config": "debug",
+      "description": "a lookup that misses moves the least recently used entry to the front",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder"
+      ],
+      "actual": [
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder"
+      ],
+      "reasons": {
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-never-evicts",
+      "config": "debug",
+      "description": "put() never evicts, so the cache grows past capacity (the capacity 0 guard is kept)",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "V1/LruContractTest.MoveOnlyValueWorks",
+        "V1/LruContractTest.SizeNeverExceedsCapacity",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "actual": [
+        "V1/LruContractTest.MoveOnlyValueWorks",
+        "V1/LruContractTest.SizeNeverExceedsCapacity",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "reasons": {
+        "V1/LruContractTest.MoveOnlyValueWorks": "Failed",
+        "V1/LruContractTest.SizeNeverExceedsCapacity": "Failed",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "Failed",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V1/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-ignores-capacity",
+      "config": "debug",
+      "description": "put() never evicts and the capacity 0 guard is removed",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "V1/LruContractTest.CapacityZeroStoresNothing",
+        "V1/LruContractTest.MoveOnlyValueWorks",
+        "V1/LruContractTest.SizeNeverExceedsCapacity",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "actual": [
+        "V1/LruContractTest.CapacityZeroStoresNothing",
+        "V1/LruContractTest.MoveOnlyValueWorks",
+        "V1/LruContractTest.SizeNeverExceedsCapacity",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "reasons": {
+        "V1/LruContractTest.CapacityZeroStoresNothing": "Failed",
+        "V1/LruContractTest.MoveOnlyValueWorks": "Failed",
+        "V1/LruContractTest.SizeNeverExceedsCapacity": "Failed",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "Failed",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V1/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-full-cache-drops-new-keys",
+      "config": "debug",
+      "description": "a full cache returns from put() instead of evicting, silently dropping the new key",
+      "note": "The size-bound contract tests cannot see this bug; JustInsertedKeyIsAlwaysRetrievable exists for it.",
+      "captured": {},
+      "expected": [
+        "V1/LruContractTest.JustInsertedKeyIsAlwaysRetrievable",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "actual": [
+        "V1/LruContractTest.JustInsertedKeyIsAlwaysRetrievable",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "reasons": {
+        "V1/LruContractTest.JustInsertedKeyIsAlwaysRetrievable": "Failed",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "Failed",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V1/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-get-does-not-refresh",
+      "config": "debug",
+      "description": "get() finds the entry but does not move it to the front",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]"
+      ],
+      "actual": [
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]"
+      ],
+      "reasons": {
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard": "Failed",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V2/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]": "Failed",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-visit-does-not-refresh",
+      "config": "debug",
+      "description": "visit() does not move the entry to the front, so neither does get()",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]"
+      ],
+      "actual": [
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]"
+      ],
+      "reasons": {
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard": "Failed",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V2/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency": "Failed",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]": "Failed",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]": "Failed",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-update-does-not-refresh",
+      "config": "debug",
+      "description": "put() on an existing key replaces the value but does not move the entry to the front",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]"
+      ],
+      "actual": [
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]"
+      ],
+      "reasons": {
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard": "Failed",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-miss-reorders",
+      "config": "debug",
+      "description": "a lookup that misses moves the least recently used entry to the front",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]"
+      ],
+      "actual": [
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]"
+      ],
+      "reasons": {
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard": "Failed",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-full-cache-drops-new-keys",
+      "config": "debug",
+      "description": "a full cache returns from put() instead of evicting",
+      "note": "EvictionInOneShardLeavesOtherShardsUntouched passes: a dropped insert does not evict a bystander.",
+      "captured": {},
+      "expected": [
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "V2/LruContractTest.JustInsertedKeyIsAlwaysRetrievable",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x16]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x1]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x2]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x32]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]"
+      ],
+      "actual": [
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "V2/LruContractTest.JustInsertedKeyIsAlwaysRetrievable",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x16]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x1]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x2]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x32]",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]"
+      ],
+      "reasons": {
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange": "Failed",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard": "Failed",
+        "V2/LruContractTest.JustInsertedKeyIsAlwaysRetrievable": "Failed",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "Failed",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V2/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency": "Failed",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x16]": "Failed",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x1]": "Failed",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x2]": "Failed",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x32]": "Failed",
+        "V3/LruContractTest.JustInsertedKeyIsAlwaysRetrievable[x7]": "Failed",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]": "Failed",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]": "Failed",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]": "Failed",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]": "Failed",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]": "Failed",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-slot-bound-off-by-one",
+      "config": "debug",
+      "description": "the never-used slot bound is <= instead of <, so a capacity + 1 entry overwrites the sentinel",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruPerShardOrder.EvictionInOneShardLeavesOtherShardsUntouched",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.MoveOnlyValueWorks",
+        "V2/LruContractTest.SizeNeverExceedsCapacity",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency",
+        "V3/LruContractTest.MoveOnlyValueWorks[x16]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x1]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x2]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x32]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x16]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x1]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x2]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x32]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]"
+      ],
+      "actual": [
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruPerShardOrder.EvictionInOneShardLeavesOtherShardsUntouched",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.MoveOnlyValueWorks",
+        "V2/LruContractTest.SizeNeverExceedsCapacity",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V2/LruStrictOrderTest.GetRefreshesRecency",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency",
+        "V3/LruContractTest.MoveOnlyValueWorks[x16]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x1]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x2]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x32]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x16]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x1]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x2]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x32]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]"
+      ],
+      "reasons": {
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange": "Failed",
+        "ShardedLruPerShardOrder.EvictionInOneShardLeavesOtherShardsUntouched": "Failed",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity": "Failed",
+        "V2/LruContractTest.MoveOnlyValueWorks": "Failed",
+        "V2/LruContractTest.SizeNeverExceedsCapacity": "Failed",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "Failed",
+        "V2/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V2/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V2/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed",
+        "V2/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed",
+        "V2/LruStrictOrderTest.VisitRefreshesRecency": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x16]": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x1]": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x2]": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x32]": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]": "Failed",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x16]": "Failed",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x1]": "Failed",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x2]": "Failed",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x32]": "Failed",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x7]": "Failed",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]": "Failed",
+        "V3/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst[x1]": "Failed",
+        "V3/LruStrictOrderTest.GetRefreshesRecency[x1]": "Failed",
+        "V3/LruStrictOrderTest.MissDoesNotMutateOrder[x1]": "Failed",
+        "V3/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing[x1]": "Failed",
+        "V3/LruStrictOrderTest.VisitRefreshesRecency[x1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-capacity-zero-guard-removed",
+      "config": "debug",
+      "description": "the capacity 0 guard is removed, so put() on an empty arena evicts the sentinel",
+      "note": "These tests fail by crashing: the mutated code reads outside the node array.",
+      "captured": {},
+      "expected": [
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.CapacityZeroStoresNothing",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]"
+      ],
+      "actual": [
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.CapacityZeroStoresNothing",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]"
+      ],
+      "reasons": {
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity": "SEGFAULT",
+        "V2/LruContractTest.CapacityZeroStoresNothing": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]": "SEGFAULT"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-bucket-minimum-one",
+      "config": "debug",
+      "description": "the bucket minimum is 1 instead of 2, so capacity 0 or 1 gives a shift of 64 in bucket_of",
+      "note": "The arithmetic test fails with an assertion in any build; the others hit the undefined shift.",
+      "captured": {},
+      "expected": [
+        "IntrusiveLruBuckets.SmallestCapacitiesKeepTheShiftDefined"
+      ],
+      "actual": [
+        "IntrusiveLruBuckets.SmallestCapacitiesKeepTheShiftDefined",
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.CapacityZeroStoresNothing",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]"
+      ],
+      "reasons": {
+        "IntrusiveLruBuckets.SmallestCapacitiesKeepTheShiftDefined": "Failed",
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange": "SEGFAULT",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity": "SEGFAULT",
+        "V2/LruContractTest.CapacityZeroStoresNothing": "SEGFAULT",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]": "SEGFAULT",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]": "SEGFAULT",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]": "SEGFAULT"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.CapacityZeroStoresNothing",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]"
+      ],
+      "problems": []
+    },
+    {
+      "id": "v3-split-drops-remainder",
+      "config": "debug",
+      "description": "shard capacities are capacity / shards, losing the remainder",
+      "note": "The contract suite cannot see this: it only bounds size from above.",
+      "captured": {},
+      "expected": [
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity"
+      ],
+      "actual": [
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity"
+      ],
+      "reasons": {
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v3-split-rounds-up",
+      "config": "debug",
+      "description": "every shard gets capacity / shards rounded up, so the shards together exceed capacity",
+      "note": "Only 7 of the contract suite's shard counts leaves a remainder for capacity 64.",
+      "captured": {},
+      "expected": [
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x7]"
+      ],
+      "actual": [
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x7]"
+      ],
+      "reasons": {
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]": "Failed",
+        "V3/LruContractTest.SizeNeverExceedsCapacity[x7]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v3-shard-count-not-clamped",
+      "config": "debug",
+      "description": "the shard count is not clamped to the capacity, allowing zero-capacity shards",
+      "note": "The contract suite cannot see this: its capacity of 64 never goes below the shard count.",
+      "captured": {},
+      "expected": [
+        "ShardedLruShards.ShardCountIsClampedToCapacity"
+      ],
+      "actual": [
+        "ShardedLruShards.ShardCountIsClampedToCapacity"
+      ],
+      "reasons": {
+        "ShardedLruShards.ShardCountIsClampedToCapacity": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v3-visit-uses-different-shard",
+      "config": "debug",
+      "description": "visit() picks the shard from the unmixed hash, so it can look in a different shard from put()",
+      "note": "At 1 and 2 shards both routes agree for the keys the contract suite uses, so it passes there.",
+      "captured": {},
+      "expected": [
+        "ShardedLruPerShardOrder.EvictionInOneShardLeavesOtherShardsUntouched",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "V3/LruContractTest.MoveOnlyValueWorks[x16]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x32]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x16]",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x32]",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x7]"
+      ],
+      "actual": [
+        "ShardedLruPerShardOrder.EvictionInOneShardLeavesOtherShardsUntouched",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard",
+        "V3/LruContractTest.MoveOnlyValueWorks[x16]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x32]",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x16]",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x32]",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x7]"
+      ],
+      "reasons": {
+        "ShardedLruPerShardOrder.EvictionInOneShardLeavesOtherShardsUntouched": "Failed",
+        "ShardedLruPerShardOrder.EvictsLeastRecentlyUsedFirstWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.GetRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.MissDoesNotMutateOrderWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.UpdateRefreshesRecencyWithinAShard": "Failed",
+        "ShardedLruPerShardOrder.VisitRefreshesRecencyWithinAShard": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x16]": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x32]": "Failed",
+        "V3/LruContractTest.MoveOnlyValueWorks[x7]": "Failed",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x16]": "Failed",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x32]": "Failed",
+        "V3/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction[x7]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-update-writes-wrong-entry",
+      "config": "release",
+      "description": "an update writes the new value into the most recently used entry instead of the entry found",
+      "note": "Only the value checksum can see this: every size assertion still passes. Counts vary per run.",
+      "captured": {
+        "corrupt_reads": {
+          "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]": [
+            36400
+          ]
+        },
+        "corrupt_at_rest": {
+          "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]": [
+            329
+          ]
+        }
+      },
+      "expected": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]"
+      ],
+      "actual": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]"
+      ],
+      "reasons": {
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-update-writes-wrong-entry",
+      "config": "release",
+      "description": "an update writes the new value into the most recently used entry instead of the entry found",
+      "note": "Counts vary per run.",
+      "captured": {
+        "corrupt_reads": {
+          "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]": [
+            36411
+          ],
+          "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]": [
+            35908
+          ]
+        },
+        "corrupt_at_rest": {
+          "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]": [
+            309
+          ],
+          "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]": [
+            308
+          ]
+        }
+      },
+      "expected": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "actual": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "reasons": {
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]": "Failed",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-put-without-lock",
+      "config": "tsan",
+      "description": "put() runs without taking the mutex",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]"
+      ],
+      "actual": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]"
+      ],
+      "reasons": {
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-size-without-lock",
+      "config": "tsan",
+      "description": "size() reads the entry count without taking the mutex",
+      "note": "On v3 the unlocked read is reached through ShardedLru::size(), which sums the shards.",
+      "captured": {},
+      "expected": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "actual": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "reasons": {
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]": "Failed",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-put-without-lock",
+      "config": "tsan",
+      "description": "put() runs without taking the mutex",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "actual": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "reasons": {
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v2]": "Failed",
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v3-unsynchronised-selection-counter",
+      "config": "tsan",
+      "description": "shard_for() increments a plain counter shared by all shards",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "actual": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]"
+      ],
+      "reasons": {
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v3x16]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v1-use-after-free-on-eviction",
+      "config": "asan",
+      "description": "eviction keeps a reference to the list node's key, pops the node, then uses the reference",
+      "note": "Every test that evicts fails; tests that never evict pass.",
+      "captured": {},
+      "expected": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]",
+        "V1/LruContractTest.JustInsertedKeyIsAlwaysRetrievable",
+        "V1/LruContractTest.MoveOnlyValueWorks",
+        "V1/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction",
+        "V1/LruContractTest.SizeNeverExceedsCapacity",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "actual": [
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]",
+        "V1/LruContractTest.JustInsertedKeyIsAlwaysRetrievable",
+        "V1/LruContractTest.MoveOnlyValueWorks",
+        "V1/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction",
+        "V1/LruContractTest.SizeNeverExceedsCapacity",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst",
+        "V1/LruStrictOrderTest.GetRefreshesRecency",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency"
+      ],
+      "reasons": {
+        "LruConcurrentTest.MixedOpsKeepSizeBoundedAndValuesIntact[v1]": "Failed",
+        "V1/LruContractTest.JustInsertedKeyIsAlwaysRetrievable": "Failed",
+        "V1/LruContractTest.MoveOnlyValueWorks": "Failed",
+        "V1/LruContractTest.NoValueCopiesOnPutUpdateVisitOrEviction": "Failed",
+        "V1/LruContractTest.SizeNeverExceedsCapacity": "Failed",
+        "V1/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "Failed",
+        "V1/LruStrictOrderTest.EvictsLeastRecentlyUsedFirst": "Failed",
+        "V1/LruStrictOrderTest.GetRefreshesRecency": "Failed",
+        "V1/LruStrictOrderTest.MissDoesNotMutateOrder": "Failed",
+        "V1/LruStrictOrderTest.UpdateRefreshesRecencyWithoutGrowing": "Failed",
+        "V1/LruStrictOrderTest.VisitRefreshesRecency": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-use-after-destroy-on-eviction",
+      "config": "asan",
+      "description": "eviction destroys the victim entry before reading its key to unlink it from its hash chain",
+      "note": "Expected to go undetected, and recorded as a cost of the arena design: the arena's storage stays allocated for the cache's lifetime, so AddressSanitizer has no freed memory to report. v1's equivalent is caught (v1-use-after-free-on-eviction).",
+      "captured": {},
+      "expected": [],
+      "actual": [],
+      "reasons": {},
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    },
+    {
+      "id": "v2-bucket-minimum-one-ubsan",
+      "config": "ubsan",
+      "description": "the same bucket-minimum bug, built with UndefinedBehaviorSanitizer",
+      "note": "",
+      "captured": {},
+      "expected": [
+        "IntrusiveLruBuckets.SmallestCapacitiesKeepTheShiftDefined",
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.CapacityZeroStoresNothing",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]"
+      ],
+      "actual": [
+        "IntrusiveLruBuckets.SmallestCapacitiesKeepTheShiftDefined",
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity",
+        "V2/LruContractTest.CapacityZeroStoresNothing",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]"
+      ],
+      "reasons": {
+        "IntrusiveLruBuckets.SmallestCapacitiesKeepTheShiftDefined": "Failed",
+        "IntrusiveLruBuckets.SmallestCapacitiesRoundTripKeysAcrossTheHashRange": "Failed",
+        "ShardedLruShards.ShardCapacitiesSumToTheRequestedCapacity": "Failed",
+        "V2/LruContractTest.CapacityZeroStoresNothing": "Failed",
+        "V2/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent": "Failed",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x16]": "Failed",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x1]": "Failed",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x2]": "Failed",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x32]": "Failed",
+        "V3/LruContractTest.CapacityZeroStoresNothing[x7]": "Failed",
+        "V3/LruStrictOrderTest.CapacityOneKeepsOnlyMostRecent[x1]": "Failed"
+      },
+      "missed": [],
+      "unexpected": [],
+      "tolerated_seen": [],
+      "problems": []
+    }
+  ]
+}
